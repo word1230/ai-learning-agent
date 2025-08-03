@@ -6,9 +6,12 @@ server:
 spring:
   application:
     name: ai-learning-agent
-
-
-
+  ai:
+    dashscope:
+      chat:
+        options:
+          model: qwen-plus
+      api-key: sk-52b7b44f45ed4d69bef8619d802e7081
 
 springdoc:
   swagger-ui:
