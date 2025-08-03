@@ -13,7 +13,8 @@ public class SpringAiInvoke {
 
 
     public SpringAiInvoke(ChatClient.Builder builder){
-        this.chatClient =builder.build();
+        this.chatClient =builder
+                .build();
     }
 
     public String chat(String input){
