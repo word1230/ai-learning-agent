@@ -10,6 +10,8 @@ import org.springframework.ai.chat.memory.MessageWindowChatMemory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.List;
+
 import static org.springframework.ai.chat.memory.ChatMemory.CONVERSATION_ID;
 @Component
 public class LearningApp {
@@ -47,11 +49,12 @@ public class LearningApp {
     public  LearningApp(ChatClient.Builder builder){
         MessageWindowChatMemory chatmemory = MessageWindowChatMemory.builder()
                 .chatMemoryRepository(new InMemoryChatMemoryRepository())
-                .maxMessages(20)
+                .maxMessages(5)
                 .build();
         this.chatClient = builder
                 .defaultSystem(SYSTEM_PROMPT)
                 .defaultAdvisors(MessageChatMemoryAdvisor.builder(chatmemory).build())
+                .defaultAdvisors(new MyLoggerAdvisor())
                 .build();
     }
 
@@ -70,6 +73,19 @@ public class LearningApp {
 //                .advisors(new ReReadingAdvisor())
                 .call()
                 .content();
+    }
+
+record  LearningReport(String title, List<String> questtion){
+
+}
+    public LearningReport doChatWithReport(String query, String conversationId){
+        return  chatClient.prompt(query)
+                .system("每次对话生成一些问题，标题为{用户名}的学习提问，内容建议为列表")
+                .advisors(spec -> spec.param(CONVERSATION_ID,conversationId))
+                .user(query)
+                .call()
+                .entity(LearningReport.class);
+
     }
 
 

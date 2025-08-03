@@ -23,4 +23,12 @@ class LearningAppTest {
 
 
     }
+
+    @Test
+    void doChatWithReport() {
+
+        LearningApp.LearningReport learningReport = app.doChatWithReport("你好，我是cheems，我想要学习redis", "1");
+        System.out.println(learningReport.toString());
+        Assertions.assertNotNull(learningReport);
+    }
 }
