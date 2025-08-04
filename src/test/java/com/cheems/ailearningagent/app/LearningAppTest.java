@@ -78,4 +78,10 @@ class LearningAppTest {
         Assertions.assertNotNull(answer);
     }
 
+    @Test
+    void doChatWithMcp() {
+        String chatId = UUID.randomUUID().toString();
+        String s = app.doChatWithMcp("帮我找一些学习激励的图片", chatId);
+        Assertions.assertNotNull(s);
+    }
 }

@@ -10,8 +10,10 @@ import org.springframework.ai.chat.client.advisor.api.Advisor;
 import org.springframework.ai.chat.client.advisor.vectorstore.QuestionAnswerAdvisor;
 import org.springframework.ai.chat.memory.InMemoryChatMemoryRepository;
 import org.springframework.ai.chat.memory.MessageWindowChatMemory;
+import org.springframework.ai.mcp.SyncMcpToolCallbackProvider;
 import org.springframework.ai.tool.ToolCallback;
 import org.springframework.ai.vectorstore.VectorStore;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -115,6 +117,28 @@ record  LearningReport(String title, List<String> questtion){
                 .content();
 
     }
+
+
+
+    @Resource
+    private SyncMcpToolCallbackProvider toolCallbackProvider;
+
+
+
+    public String doChatWithMcp(String query, String conversationId){
+
+
+        return  chatClient
+                .prompt()
+                .user(query)
+                .advisors(spec -> spec.param(CONVERSATION_ID,conversationId))
+                .toolCallbacks(toolCallbackProvider)
+                .call()
+                .content();
+
+    }
+
+
 
 
 
