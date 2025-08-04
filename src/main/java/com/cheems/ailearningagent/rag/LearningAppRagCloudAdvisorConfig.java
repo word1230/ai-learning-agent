@@ -11,6 +11,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
+/**
+ * 基于阿里云百炼知识库 的rag
+ */
+
 @Component
 public class LearningAppRagCloudAdvisorConfig {
 
