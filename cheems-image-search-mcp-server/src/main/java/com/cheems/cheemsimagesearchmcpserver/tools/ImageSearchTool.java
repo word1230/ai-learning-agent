@@ -18,7 +18,7 @@ public class ImageSearchTool {
 
 
     // 替换为你的 Pexels API 密钥（需从官网申请）
-    private static final String API_KEY = "X6XGWcYbLcyDcB5LbkYYMFRX7M8nRIRNS5A5pwGfPFhhvaRvgMq658sY";
+    private static final String API_KEY = "你的key";
 
     // Pexels 常规搜索接口（请以文档为准）
     private static final String API_URL = "https://api.pexels.com/v1/search";

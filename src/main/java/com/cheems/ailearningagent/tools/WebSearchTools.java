@@ -19,7 +19,7 @@ import java.util.Map;
 public class WebSearchTools {
 
     // 替换为您的实际 API Key
-    private static final String API_KEY = "w1x1HDhmdv6pqXKbM34x1hk7";
+    private static final String API_KEY = "你的key";
     private static final String BASE_URL = "https://www.searchapi.io/api/v1/search";
     private static final String ENGINE = "baidu";
 
