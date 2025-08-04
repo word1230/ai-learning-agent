@@ -1,6 +1,6 @@
 {
   "mcpServers": {
-    "yu-image-search-mcp-server": {
+    "cheems-image-search-mcp-server": {
       "command": "java",
       "args": [
         "-Dspring.ai.mcp.server.stdio=true",

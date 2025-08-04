@@ -1,6 +1,8 @@
 
 server:
   port: 8123
+  servlet:
+    context-path: /api
 
 spring:
   application:
@@ -10,7 +12,7 @@ spring:
       chat:
         options:
           model: qwen-plus
-      api-key: 你的key
+      api-key: sk-082a792924e944b4805179717a6e7ad0
 
 #    mcp:
 #      client:
@@ -18,12 +20,13 @@ spring:
 #          connections:
 #            server1:
 #              url: http://localhost:8127
-    mcp:
-      client:
-        stdio:
-          servers-configuration: classpath:mcp-server.json
+#    mcp:
+#      client:
+#        stdio:
+#          servers-configuration: classpath:mcp-server.json
   profiles:
     active: local
+
 
 springdoc:
   swagger-ui:

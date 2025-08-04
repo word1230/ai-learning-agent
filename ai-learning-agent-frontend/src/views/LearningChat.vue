@@ -56,7 +56,11 @@
               </div>
             </div>
             <div class="message-bubble">
-              <div class="message-text" v-html="formatMessage(message.content)"></div>
+              <div class="message-text-container">
+                <div class="message-text" v-html="formatMessage(message.content)"></div>
+                <!-- 打字机光标效果 -->
+                <span v-if="isTyping && currentTypingMessage && currentTypingMessage.id === message.id" class="typing-cursor">|</span>
+              </div>
               <div class="message-time">{{ formatTime(message.timestamp) }}</div>
             </div>
           </div>
@@ -141,6 +145,9 @@ export default {
     const messagesContainer = ref(null)
     const messageInput = ref(null)
     let currentEventSource = null
+    let typewriterQueue = []
+    let isTyping = ref(false)
+    let currentTypingMessage = ref(null)
 
     // 生成聊天ID
     onMounted(() => {
@@ -153,6 +160,14 @@ export default {
       if (currentEventSource) {
         currentEventSource.close()
       }
+      // 清理打字机状态
+      if (typingTimeout) {
+        clearTimeout(typingTimeout)
+        typingTimeout = null
+      }
+      typewriterQueue = []
+      isTyping.value = false
+      currentTypingMessage.value = null
     })
 
     // 返回主页
@@ -160,6 +175,14 @@ export default {
       if (currentEventSource) {
         currentEventSource.close()
       }
+      // 清理打字机状态
+      if (typingTimeout) {
+        clearTimeout(typingTimeout)
+        typingTimeout = null
+      }
+      typewriterQueue = []
+      isTyping.value = false
+      currentTypingMessage.value = null
       router.push('/')
     }
 
@@ -211,6 +234,65 @@ export default {
       }
     }
 
+    // 打字机效果函数
+    let isProcessingQueue = false
+
+    const addToTypewriterQueue = (message, newText) => {
+      console.log('添加到打字机队列:', newText, '长度:', newText.length)
+
+      if (!currentTypingMessage.value || currentTypingMessage.value.id !== message.id) {
+        // 开始新的打字机效果
+        console.log('开始新的打字机效果，消息ID:', message.id)
+        currentTypingMessage.value = message
+        isTyping.value = true
+        typewriterQueue = []
+        isProcessingQueue = false
+        // 确保消息内容为空，避免显示之前的内容
+        message.content = ''
+      }
+
+      // 添加新字符到队列
+      const chars = newText.split('')
+      typewriterQueue.push(...chars)
+      console.log('添加字符:', chars, '当前队列长度:', typewriterQueue.length)
+
+      // 如果没有在处理队列，开始处理
+      if (!isProcessingQueue) {
+        console.log('开始处理打字机队列')
+        isProcessingQueue = true
+        processTypewriterQueue()
+      }
+    }
+
+    let typingTimeout = null
+
+    const processTypewriterQueue = () => {
+      if (typingTimeout) {
+        clearTimeout(typingTimeout)
+        typingTimeout = null
+      }
+
+      if (typewriterQueue.length > 0 && currentTypingMessage.value && isTyping.value) {
+        const char = typewriterQueue.shift()
+        currentTypingMessage.value.content += char
+        console.log('打字机输出字符:', JSON.stringify(char), '剩余队列:', typewriterQueue.length)
+        scrollToBottom()
+
+        // 继续处理下一个字符，调整速度为50ms让打字效果更流畅
+        typingTimeout = setTimeout(processTypewriterQueue, 50)
+      } else {
+        // 队列为空或停止条件
+        console.log('打字机队列处理完成，队列长度:', typewriterQueue.length, '是否在打字:', isTyping.value)
+        isProcessingQueue = false
+        if (typewriterQueue.length === 0) {
+          isTyping.value = false
+          if (!isLoading.value) {
+            currentTypingMessage.value = null
+          }
+        }
+      }
+    }
+
     // 处理SSE聊天
     const handleSSEChat = (query) => {
       return new Promise((resolve, reject) => {
@@ -225,18 +307,32 @@ export default {
           isUser: false,
           timestamp: new Date()
         }
-        
+
         messages.value.push(aiMessage)
         isAiTyping.value = false
-        
+
         currentEventSource = createSSEConnection(query, chatId.value, {
           onMessage: (data) => {
-            // 累积AI响应内容
-            aiMessage.content += data
-            scrollToBottom()
+            console.log('收到SSE数据:', data)
+            // 实时添加到打字机队列
+            addToTypewriterQueue(aiMessage, data)
           },
           onComplete: () => {
-            resolve()
+            console.log('SSE连接完成，等待打字机队列处理完毕')
+
+            // SSE完成，等待打字机队列处理完毕
+            const checkComplete = () => {
+              console.log('检查完成状态，队列长度:', typewriterQueue.length, '是否在打字:', isTyping.value)
+              if (typewriterQueue.length === 0 && !isTyping.value) {
+                console.log('打字机效果完全完成')
+                currentTypingMessage.value = null
+                resolve()
+              } else {
+                setTimeout(checkComplete, 200)
+              }
+            }
+            // 给一点时间让最后的字符处理完
+            setTimeout(checkComplete, 100)
           },
           onError: (error) => {
             reject(error)
@@ -272,6 +368,8 @@ export default {
       isConnected,
       messagesContainer,
       messageInput,
+      isTyping,
+      currentTypingMessage,
       goBack,
       sendMessage,
       handleKeyDown,
@@ -606,7 +704,13 @@ export default {
   border-color: var(--border-primary);
 }
 
+.message-text-container {
+  display: inline-block;
+  width: 100%;
+}
+
 .message-text {
+  display: inline;
   line-height: 1.6;
   word-wrap: break-word;
   text-align: left; /* 确保文字左对齐 */
@@ -615,6 +719,30 @@ export default {
 .user-message .message-text {
   text-align: left; /* 用户消息也左对齐 */
   color: var(--bg-primary);
+}
+
+/* 打字机光标效果 */
+.typing-cursor {
+  display: inline-block;
+  background-color: var(--accent-cyan);
+  width: 2px;
+  height: 1.2em;
+  margin-left: 2px;
+  vertical-align: baseline;
+  animation: blink 1s infinite;
+}
+
+.ai-message .typing-cursor {
+  background-color: var(--accent-cyan);
+}
+
+.user-message .typing-cursor {
+  background-color: var(--bg-primary);
+}
+
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
 }
 
 .ai-message .message-text {
