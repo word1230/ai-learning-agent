@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 // 基础URL配置
-const BASE_URL = 'http://122.51.54.239:8123'
+const BASE_URL = 'http://localhost:8123/api'
 
 // 配置axios实例
 const apiClient = axios.create({
