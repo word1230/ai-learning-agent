@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, minimum-scale=0.5" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <!-- SEO基础信息 -->
+    <title>AI学习助手 - 智能学习平台</title>
+    <meta name="description" content="专业的AI学习助手平台，提供智能问答、实时对话、学习指导等功能。基于Vue3的现代化设计，体验最先进的人工智能技术。" />
+    <meta name="keywords" content="AI学习助手,人工智能,智能问答,在线学习,AI聊天,学习平台,Vue3,实时对话" />
+    <meta name="author" content="AI学习助手团队" />
+    <meta name="robots" content="index, follow" />
+    <meta name="language" content="zh-CN" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="AI学习助手 - 智能学习平台" />
+    <meta property="og:description" content="专业的AI学习助手平台，提供智能问答、实时对话、学习指导等功能。" />
+    <meta property="og:site_name" content="AI学习助手" />
+    <meta property="og:locale" content="zh_CN" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="AI学习助手 - 智能学习平台" />
+    <meta name="twitter:description" content="专业的AI学习助手平台，提供智能问答、实时对话、学习指导等功能。" />
+
+    <!-- 移动端优化 -->
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="AI学习助手" />
+
+    <!-- 主题颜色 -->
+    <meta name="theme-color" content="#0a0a0a" />
+    <meta name="msapplication-TileColor" content="#0a0a0a" />
+
+    <!-- 图标 -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="alternate icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="/manifest.json" />
+
+    <!-- 预加载关键资源 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <!-- 性能优化 -->
+    <link rel="dns-prefetch" href="//localhost:8123" />
+
+    <!-- 结构化数据 -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "AI学习助手",
+      "description": "专业的AI学习助手平台，提供智能问答、实时对话、学习指导等功能",
+      "applicationCategory": "EducationalApplication",
+      "operatingSystem": "Web Browser",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "CNY"
+      },
+      "creator": {
+        "@type": "Organization",
+        "name": "AI学习助手团队"
+      }
+    }
+    </script>
+
+    <!-- 内联关键CSS以提升首屏性能 -->
+    <style>
+      /* 关键CSS - 防止FOUC */
+      html, body {
+        margin: 0;
+        padding: 0;
+        background: #0a0a0a;
+        color: #ffffff;
+        font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+      }
+
+      #app {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+
+      /* 加载动画 */
+      .loading-screen {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 9999;
+        transition: opacity 0.5s ease;
+      }
+
+      .loading-spinner {
+        width: 50px;
+        height: 50px;
+        border: 3px solid rgba(0, 245, 255, 0.3);
+        border-top: 3px solid #00f5ff;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+      }
+
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+
+      .loading-text {
+        margin-top: 20px;
+        color: #00f5ff;
+        font-size: 14px;
+        letter-spacing: 1px;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- 加载屏幕 -->
+    <div id="loading-screen" class="loading-screen">
+      <div>
+        <div class="loading-spinner"></div>
+        <div class="loading-text">AI学习助手加载中...</div>
+      </div>
+    </div>
+
+    <div id="app"></div>
+
+    <!-- 移除加载屏幕的脚本 -->
+    <script>
+      window.addEventListener('load', function() {
+        const loadingScreen = document.getElementById('loading-screen');
+        if (loadingScreen) {
+          setTimeout(() => {
+            loadingScreen.style.opacity = '0';
+            setTimeout(() => {
+              loadingScreen.remove();
+            }, 500);
+          }, 1000);
+        }
+      });
+    </script>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

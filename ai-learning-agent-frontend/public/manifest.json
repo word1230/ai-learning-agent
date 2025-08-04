@@ -1,0 +1,20 @@
+{
+  "name": "AI学习助手 - 智能学习平台",
+  "short_name": "AI学习助手",
+  "description": "专业的AI学习助手平台，提供智能问答、实时对话、学习指导等功能",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a0a0a",
+  "theme_color": "#00f5ff",
+  "orientation": "portrait-primary",
+  "categories": ["education", "productivity", "utilities"],
+  "lang": "zh-CN",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

@@ -13,16 +13,16 @@ spring:
       api-key: sk-52b7b44f45ed4d69bef8619d802e7081
       embedding:
         api-key:
-    mcp:
-      client:
-        sse:
-          connections:
-            server1:
-              url: http://localhost:8127
 #    mcp:
 #      client:
-#        stdio:
-#          servers-configuration: classpath:mcp-server.json
+#        sse:
+#          connections:
+#            server1:
+#              url: http://localhost:8127
+    mcp:
+      client:
+        stdio:
+          servers-configuration: classpath:mcp-server.json
 
 springdoc:
   swagger-ui:
