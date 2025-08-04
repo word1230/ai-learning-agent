@@ -10,9 +10,8 @@ spring:
       chat:
         options:
           model: qwen-plus
-      api-key: sk-52b7b44f45ed4d69bef8619d802e7081
-      embedding:
-        api-key:
+      api-key: 你的key
+
 #    mcp:
 #      client:
 #        sse:
@@ -23,6 +22,8 @@ spring:
       client:
         stdio:
           servers-configuration: classpath:mcp-server.json
+  profiles:
+    active: local
 
 springdoc:
   swagger-ui:
