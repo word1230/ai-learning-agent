@@ -1,8 +1,11 @@
 import axios from 'axios'
 
+// 基础URL配置
+const BASE_URL = 'http://122.51.54.239:8123'
+
 // 配置axios实例
 const apiClient = axios.create({
-  baseURL: 'http://localhost:8123',
+  baseURL: BASE_URL,
   timeout: 30000,
   headers: {
     'Content-Type': 'application/json'
@@ -66,9 +69,9 @@ export async function chatSync(query, chatId) {
 export function createSSEConnection(query, chatId, callbacks = {}) {
   const { onMessage, onComplete, onError } = callbacks
   
-  // 构建SSE URL
+  // 构建SSE URL，基于baseURL
   const params = new URLSearchParams({ query, chatId })
-  const sseUrl = `http://localhost:8123/ai/learning_app/chat/sse?${params.toString()}`
+  const sseUrl = `${BASE_URL}/ai/learning_app/chat/sse?${params.toString()}`
   
   console.log('创建SSE连接:', sseUrl)
   
