@@ -17,6 +17,7 @@ public class ToolRegistration {
         TerminalOperationTool terminalOperationTool = new TerminalOperationTool();
         WebScrapingTool webScrapingTool = new WebScrapingTool();
         WebSearchTools webSearchTools = new WebSearchTools();
+        TerminateTool terminateTool = new TerminateTool();
 
         return ToolCallbacks.from(
                 fileOperationTool,
@@ -24,7 +25,8 @@ public class ToolRegistration {
                 resourceDownloadTool,
                 terminalOperationTool,
                 webScrapingTool,
-                webSearchTools
+                webSearchTools,
+                terminateTool
         );
     }
 
