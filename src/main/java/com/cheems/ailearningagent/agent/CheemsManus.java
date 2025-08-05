@@ -3,6 +3,7 @@ package com.cheems.ailearningagent.agent;
 import com.alibaba.cloud.ai.dashscope.chat.DashScopeChatModel;
 import com.cheems.ailearningagent.advisor.MyLoggerAdvisor;
 import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.tool.ToolCallback;
 import org.springframework.stereotype.Component;
 
@@ -11,7 +12,7 @@ public class CheemsManus extends ToolCallAgent {
 
 
 
-    public CheemsManus(ToolCallback[] availableTools, DashScopeChatModel dashscopeChatModel) {
+    public CheemsManus(ToolCallback[] availableTools, ChatModel dashscopeChatModel) {
         super(availableTools);
 
         this.setName("cheemsManus");
